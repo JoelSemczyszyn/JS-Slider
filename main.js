@@ -10,7 +10,8 @@
 
 var bg = document.getElementById("background"),
 	bgCvs = bg.getContext("2d"),
-	testBtn = document.getElementById("test"),
+	mobileBtn = document.getElementById("test"),
+	slide1Btn = document.getElementById("slide1Btn"),
 	mobileCheck = 0,
 	slide2X = 600;
 
@@ -18,14 +19,16 @@ var bg = document.getElementById("background"),
 // Functions 
 // ------------------------------------ //
 
-function tlPlay() { tl.play(); }
+function tlMobilePlay() { tlMobile.play(); }
+function slide1Play() { tlMain.play(); }
 function testFunction() {
 	if (mobileCheck == 1) {
 		slide2X = slide2X + 50;
 	}
 }
 
-testBtn.addEventListener("click", tlPlay);
+mobileBtn.addEventListener("click", tlMobilePlay);
+slide1Btn.addEventListener("click", slide1Play);
 
 // 
 // Canvas Work  
@@ -50,12 +53,12 @@ bgCvs.fillRect(0, 0, 1400, 400);
 
 // Timelines
 
-var	tl = new TimelineLite( {paused:true} );
+var	tlMobile = new TimelineLite( {paused:true} ),
+	tlMain = new TimelineLite( {paused:true} );
 
+tlMobile.add( TweenMax.staggerFromTo(".mobile", 0.5, {opacity: 0, y:10}, {opacity: 1, y:0}, 0.2));
+/*	.add( function() {mobileCheck = 1})
+	.staggerTo(".slide1", 0.5, {opacity: 1, left: slide2X}, 0.5);*/
 
-// Main Timeline
-
-tl.add( TweenMax.staggerFromTo(".slide1", 0.5, {opacity: 0, y:10}, {opacity: 1, y:0}, 0.2))
-	.add( function() {mobileCheck = 1})
-	.staggerTo(".slide2", 0.5, {opacity: 1, left: slide2X}, 0.5);
+tlMain.add( TweenMax.fromTo(".slide1", 0.5, {y:10, opacity:0}, {opacity:1, y:0}));
 
