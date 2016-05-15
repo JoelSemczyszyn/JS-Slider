@@ -24,12 +24,44 @@ function tlMobilePlay() { tlMobile.play(); }
 function slide1Play() { tlSlide1.play(); }
 function slide2Play() { tlSlide2.play(); }
 function slide3Play() { tlSlide3.play(); }
-function slideFinished(e) { 
-
+function slideFinished(h) {
+	if (h == 1) {
+		if (slideActive == 2) {
+			return slide2Play;
+		} else {
+			return slide3Play;
+		}
+	} else if (h == 2) {
+		if (slideActive == 1) { // I'm sure there's a more effecient way to write this using objects
+			return slide1Play;
+		} else {
+			return slide3Play;
+		}
+	} else {
+		if (slideActive == 1) {
+			return slide1Play;
+		} else {
+			return slide2Play;
+		}
+	}
+	slideActive = 0;
 }
 
+function slidePlay(e) { 
+	if (slideActive == e) {} else if (e == 1) {
+		return slide1Play;
+	} else if (e == 2) {
+		return slide2Play;
+	} else if (e == 3) {
+		return slide3Play;
+	}
+}
 
-/* tlSlide + e */
+function sA(g) {
+	slideActive = g;
+}
+
+// Buttons
 
 mobileBtn.addEventListener("click", tlMobilePlay);
 slide1Btn.addEventListener("click", slidePlay(1));
@@ -65,58 +97,23 @@ var	tlMobile = new TimelineLite( {paused:true} ),
 	tlSlide3 = new TimelineLite( {paused:true} );
 
 tlMobile.add( TweenMax.staggerFromTo(".mobile", 0.5, {opacity: 0, y:10}, {opacity: 1, y:0}, 0.2));
-/*	.add( function() {mobileCheck = 1})
-	.staggerTo(".slide1", 0.5, {opacity: 1, left: slide2X}, 0.5);*/
 
 tlSlide1.add( TweenMax.fromTo(".slide1", 0.5, {y:5, opacity:0}, {opacity:1, y:0}))
-	.add(function() {slideActive = 1;})
+	.add(function() {return sA(1);})
 	.add(function(){return tlSlide1.pause();})
 	.to(".slide1", 0.5, {y:-5, opacity:0})
 	.add(function() {return slideFinished(1)});
 
 tlSlide2.add( TweenMax.fromTo(".slide2", 0.5, {y:5, opacity:0}, {opacity:1, y:0}))
-	.add(function() {slideActive = 2;})
+	.add(function() {return sA(2);})
 	.add(function(){return tlSlide2.pause();})
 	.to(".slide2", 0.5, {y:-5, opacity:0})
 	.add(function() {return slideFinished(2)});
 
 tlSlide3.add( TweenMax.fromTo(".slide3", 0.5, {y:5, opacity:0}, {opacity:1, y:0}))
-	.add(function() {slideActive = 3;})
+	.add(function() {return sA(3);})
 	.add(function(){return tlSlide3.pause();})
 	.to(".slide3", 0.5, {y:-5, opacity:0})
 	.add(function() {return slideFinished(3)});
 
-
-function slidePlay(e) { 
-	if (slideActive == e) {} else if (e == 1) {
-		return slide1Play;
-	} else if (e == 2) {
-		return slide2Play;
-	} else if (e == 3) {
-		return slide3Play;
-	}
-}
-
-function slideFinished(e) {
-	if (e == 1) {
-		if (slideActive == 2) {
-			return slide2Play;
-		} else {
-			return slide3Play;
-		}
-	} else if (e == 2) {
-		if (slideActive == 1) {
-			return slide1Play;
-		} else {
-			return slide3Play;
-		}
-	} else {
-		if (slideActive == 1) {
-			return slide1Play;
-		} else {
-			return slide2Play;
-		}
-	}
-	slideFinished = 0;
-};
 
