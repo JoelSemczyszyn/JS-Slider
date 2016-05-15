@@ -13,8 +13,7 @@ var bg = document.getElementById("background"),
 	mobileBtn = document.getElementById("test"),
 	slide1Btn = document.getElementById("slide1Btn"),
 	slideActive = 0,
-	mobileCheck = 0,
-	slide2X = 600;
+	mobileCheck = 0;
 
 //
 // Functions 
@@ -23,24 +22,13 @@ var bg = document.getElementById("background"),
 function tlMobilePlay() { tlMobile.play(); }
 function slide1Play() { tlSlide1.play(); }
 function slide2Play() { tlSlide2.play(); }
-function testFunction() {
-	if (mobileCheck == 1) {
-		slide2X = slide2X + 50;
-	}
-}
 
-function slideCheck() {
-	var x = 0;
-	if (slideActive !== 0) {
-		x = "tlSlide" + slideActive;
-		document.getElementById("testDisplay").innerHTML = slideActive;
-	}
-}
+
+/* tlSlide + e */
 
 mobileBtn.addEventListener("click", tlMobilePlay);
-slide1Btn.addEventListener("click", slide1Play);
-slide2Btn.addEventListener("click", slide2Play);
-consoleBtn.addEventListener("click", slideCheck());
+slide1Btn.addEventListener("click", slidePlay(1));
+slide2Btn.addEventListener("click", slidePlay(2));
 
 // 
 // Canvas Work  
@@ -66,7 +54,8 @@ bgCvs.fillRect(0, 0, 1400, 400);
 // Timelines
 
 var	tlMobile = new TimelineLite( {paused:true} ),
-	tlSlide1 = new TimelineLite( {paused:true} );
+	tlSlide1 = new TimelineLite( {paused:true} ),
+	tlSlide2 = new TimelineLite( {paused:true} );
 
 tlMobile.add( TweenMax.staggerFromTo(".mobile", 0.5, {opacity: 0, y:10}, {opacity: 1, y:0}, 0.2));
 /*	.add( function() {mobileCheck = 1})
@@ -77,4 +66,19 @@ tlSlide1.add( TweenMax.fromTo(".slide1", 0.5, {y:5, opacity:0}, {opacity:1, y:0}
 	.add(function(){tlSlide1.pause();})
 	.to(".slide1", 0.5, {y:-5, opacity:0})
 	.add(function() {slideActive = 0});
+
+tlSlide2.add( TweenMax.fromTo(".slide2", 0.5, {y:5, opacity:0}, {opacity:1, y:0}))
+	.add(function() {return slideActive = 1;})
+	.add(function(){tlSlide2.pause();})
+	.to(".slide2", 0.5, {y:-5, opacity:0})
+	.add(function() {slideActive = 0});
+
+
+function slidePlay(e) { 
+	if (e == 1) {
+		return slide1Play;
+	} else if (e == 2) {
+		return slide2Play;
+	}
+}
 
